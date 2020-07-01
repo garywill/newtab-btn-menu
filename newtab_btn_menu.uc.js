@@ -1,9 +1,9 @@
-/* 
-Firefox userChrome JS script. 
-Add context menu for new tab button. A menu item to open clipboard URL in new tab.
-Tested on firefox 68.
-Author: https://github.com/garywill
-*/
+/* Firefox userChrome script
+ * Open URL in clipboard by right-clicking new-tab-button then use context menu
+ * Tested on Firefox 78
+ * Author: garywill (https://github.com/garywill)
+ */
+
 console.log("newtab_btn_menu.js");
 
 const new_tab_url_label = 'New tab open: ';
@@ -53,7 +53,20 @@ function newtabbtnContextMenu_onpopupshowing()
 
     document.getElementById("mainPopupSet").appendChild(newtabbtnContextMenu);
 
-    document.getAnonymousElementByAttribute(document.getElementById("tabbrowser-tabs"),"anonid","tabs-newtab-button").setAttribute("context","newtabbtnContextMenu");
-    document.getElementById("new-tab-button").setAttribute("context","newtabbtnContextMenu");
+    
+    const tabs_newtab_button = document.getElementById("tabs-newtab-button");
+    var observer1 = new MutationObserver(function(){
+        observer1.disconnect();
+        tabs_newtab_button.setAttribute("context","newtabbtnContextMenu");
+    });
+    observer1.observe(tabs_newtab_button,{attributes:true});
+    
+    
+    const new_tab_button = document.getElementById("new-tab-button");
+    var observer2 = new MutationObserver(function(){
+        observer2.disconnect();
+        new_tab_button.setAttribute("context","newtabbtnContextMenu");
+    });
+    observer2.observe(new_tab_button,{attributes:true});
     
 })();
