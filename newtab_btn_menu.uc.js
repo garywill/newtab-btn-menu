@@ -4,6 +4,10 @@
  * Author: garywill (https://garywill.github.io)
  */
 
+// ==UserScript==
+// @include         main
+// ==/UserScript==
+
 console.log("newtab_btn_menu.js");
 
 const new_tab_url_label = 'New tab open: ';
