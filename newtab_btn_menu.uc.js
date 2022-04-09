@@ -13,6 +13,39 @@ console.log("newtab_btn_menu.js");
 const new_tab_url_label = 'New tab open: ';
 var btn_newtab_w_url_clipboard_str = "";
 
+// https://searchfox.org/mozilla-central/source/browser/base/content/browser.js#3076
+// https://udn.realityripple.com/docs/Mozilla/Tech/XPCOM/Using_the_clipboard
+// https://udn.realityripple.com/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsITransferable
+function _readFromClipboard() {
+    var url = "";
+    
+    try {
+        var trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(
+            Ci.nsITransferable
+        );
+        trans.init(getLoadContext());
+
+        trans.addDataFlavor("text/unicode");
+
+        // If available, use selection clipboard, otherwise global one
+        // if (Services.clipboard.supportsSelectionClipboard()) {
+        if (false) {
+            Services.clipboard.getData(trans, Services.clipboard.kSelectionClipboard);
+        } else {
+            Services.clipboard.getData(trans, Services.clipboard.kGlobalClipboard);
+        }
+
+        var data = {};
+        trans.getTransferData("text/unicode", data);
+
+        if (data) {
+            data = data.value.QueryInterface(Ci.nsISupportsString);
+            url = data.data;
+        }
+    }catch(err) { }
+    
+    return url;
+}
 function btn_newtab_w_url_click()
 {
     gBrowser.loadOneTab(btn_newtab_w_url_clipboard_str, {
@@ -23,7 +56,7 @@ function btn_newtab_w_url_click()
 }
 function newtabbtnContextMenu_onpopupshowing(event)
 {
-    btn_newtab_w_url_clipboard_str = readFromClipboard();
+    btn_newtab_w_url_clipboard_str = _readFromClipboard();
     if (document.getElementById("btn_newtab_w_url"))
     {
         document.getElementById("btn_newtab_w_url").setAttribute("label", new_tab_url_label + btn_newtab_w_url_clipboard_str);
