@@ -2,7 +2,7 @@ Open URL in clipboard by right-clicking new-tab-button then use context menu.
 
 (Add context menu for new tab button. A menu item to open clipboard URL in new tab.)
 
-Firefox userChrome JS script. Tested on firefox 91.
+Firefox userChrome JS script. Tested on firefox 115.
 
 -------------------
 

@@ -1,6 +1,6 @@
 /* Firefox userChrome script
  * Open URL in clipboard by right-clicking new-tab-button then use context menu
- * Tested on Firefox 91
+ * Tested on Firefox 115
  * Author: garywill (https://garywill.github.io)
  */
 
@@ -25,7 +25,7 @@ function _readFromClipboard() {
         );
         trans.init(getLoadContext());
 
-        trans.addDataFlavor("text/unicode");
+        trans.addDataFlavor("text/plain");
 
         // If available, use selection clipboard, otherwise global one
         // if (Services.clipboard.supportsSelectionClipboard()) {
@@ -36,19 +36,19 @@ function _readFromClipboard() {
         }
 
         var data = {};
-        trans.getTransferData("text/unicode", data);
+        trans.getTransferData("text/plain", data);
 
         if (data) {
             data = data.value.QueryInterface(Ci.nsISupportsString);
             url = data.data;
         }
-    }catch(err) { }
+    }catch(err) { console.error("Error when trying to get clipboard content from system"); }
     
     return url;
 }
 function btn_newtab_w_url_click()
 {
-    gBrowser.loadOneTab(btn_newtab_w_url_clipboard_str, {
+    gBrowser.loadTabs([btn_newtab_w_url_clipboard_str] , {
         inBackground: false,
         relatedToCurrent: false,
         triggeringPrincipal: Services.scriptSecurityManager.createNullPrincipal({}) //FF63
