@@ -1,6 +1,6 @@
 /* Firefox userChrome script
  * Open URL in clipboard by right-clicking new-tab-button then use context menu
- * Tested on Firefox 140
+ * Tested on Firefox 153
  * Author: garywill (https://garywill.github.io)
  */
 
@@ -100,6 +100,7 @@ console.log("newtab_btn_menu.js");
     
     // Add created popup menu to two new tab buttons (different button is displayed, depending on user's customization)
     const tabs_newtab_button = document.getElementById("tabs-newtab-button");
+    tabs_newtab_button.setAttribute("context","newtabbtnContextMenu");
     var observer1 = new MutationObserver(function(){
         observer1.disconnect();
         tabs_newtab_button.setAttribute("context","newtabbtnContextMenu");
@@ -108,6 +109,7 @@ console.log("newtab_btn_menu.js");
     
     
     const new_tab_button = document.getElementById("new-tab-button");
+    new_tab_button.setAttribute("context","newtabbtnContextMenu");
     var observer2 = new MutationObserver(function(){
         observer2.disconnect();
         new_tab_button.setAttribute("context","newtabbtnContextMenu");
